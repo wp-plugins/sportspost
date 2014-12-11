@@ -16,6 +16,8 @@ Enhance your sports posts with rich, detailed metadata about games, teams, and p
 
 SportsPost 1.0 allows bloggers to search for player names of athletes in major North American sports leagues, and drop their names directly into their post. These names can then hyperlink to externally hosted Player Profile pages, with expanded news, statistics, and photos of those players.
 
+Bloggers can also optionally register at http://SportsForecaster.com/affiliates to generate advertising revenue from their links.
+
 Future versions will allow bloggers to:
 
 * Search, download, and include live, editorially licensed sports photos taken from recent sporting events
