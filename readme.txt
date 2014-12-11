@@ -27,8 +27,8 @@ This section describes how to install and use the plugin.
 
 1. Install automatically through the `Plugins` menu and `Add New` button (or upload the entire `sportspost` folder to the `/wp-content/plugins/` directory)
 2. Activate the plugin
-3. Go edit a post / page
-4. Click on the "Insert/edit Player Link" button on the editor toolbar
+3. Go to edit a post / page
+4. Click on the "Insert/Edit Player Link" button on the editor toolbar
 5. Search for a player, click on its name in the search results, and you're done.
 
 == Frequently Asked Questions ==
@@ -37,9 +37,9 @@ None at the moment.
 
 == Screenshots ==
 
-1. "Inser/edit Player Link" dialog window
-2. "Inser/edit Player Link" button in visual editor toolbar
-3. "Inser/edit Player Link" button in text editor toolbar
+1. "Insert/Edit Player Link" dialog window
+2. "Insert/Edit Player Link" button in visual editor toolbar
+3. "Insert/Edit Player Link" button in text editor toolbar
 4. Settings page
 
 == Changelog ==
