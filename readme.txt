@@ -4,7 +4,7 @@ Donate link: http://xmlteam.com/
 Tags: sport, sports, post, posts, link, links, player, players, athlete, athletes, league, leagues, MLB, NHL, NFL, NBA
 Requires at least: 4.0
 Tested up to: 4.1
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,9 @@ None at the moment.
 4. Settings page
 
 == Changelog ==
+
+= 1.1.0 =
+* Added new player profile link settings
 
 = 1.0.0 =
 * First release

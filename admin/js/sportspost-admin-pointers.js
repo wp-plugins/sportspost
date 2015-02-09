@@ -1,4 +1,4 @@
-/* global sportspost_pointers, sportsPostPlayerLinkL10n, ajaxurl */
+/* global sportspost_pointers, sportspost_data, ajaxurl */
 
 jQuery( document ).ready( function( $ ) {
 	
@@ -37,10 +37,10 @@ jQuery( document ).ready( function( $ ) {
 	$( document ).on( 'content_editor_ready',  function() {
 		
 		// Step 1: Pointer for setting Affiliate ID
-		sportspost_open_pointer( 'sportspost-settings', sportsPostPlayerLinkL10n.next, function() {
+		sportspost_open_pointer( 'sportspost-settings', sportspost_data.next, function() {
 
 			// Step 2: Pointer for button in TinyMCE editor toolbar
-			sportspost_open_pointer( 'sportspost-playerlink-button', sportsPostPlayerLinkL10n.next, function() {
+			sportspost_open_pointer( 'sportspost-playerlink-button', sportspost_data.next, function() {
 				$( sportspost_pointers['sportspost-playerlink-button']['target'] ).click();
 			});
 			
@@ -57,23 +57,23 @@ jQuery( document ).ready( function( $ ) {
 		}
 		
 		// Step 1: League
-		sportspost_open_pointer( 'sportspost-player-league', sportsPostPlayerLinkL10n.next, function() {
+		sportspost_open_pointer( 'sportspost-player-league', sportspost_data.next, function() {
 			
 			// Step 2: Player name	
-			sportspost_open_pointer( 'sportspost-player-search', sportsPostPlayerLinkL10n.next, function() {
+			sportspost_open_pointer( 'sportspost-player-search', sportspost_data.next, function() {
 				if ( $( '#player-search-field' ).val().length < 3 ) {
 					$( '#player-search-field' ).val( 'Alan' );
 					$( '#player-search-field' ).keyup();
 				}
 				
 				// Step 3: Player search result
-				sportspost_open_pointer( 'sportspost-player-search-results', sportsPostPlayerLinkL10n.next, function() {
+				sportspost_open_pointer( 'sportspost-player-search-results', sportspost_data.next, function() {
 					
 					// Step 4: Preview Link
-					sportspost_open_pointer( 'sportspost-player-link-preview', sportsPostPlayerLinkL10n.next, function() {
+					sportspost_open_pointer( 'sportspost-player-link-preview', sportspost_data.next, function() {
 						
 						// Step 5: Add link and close dialog
-						sportspost_open_pointer( 'sportspost-player-link-submit', sportsPostPlayerLinkL10n.close, function() {
+						sportspost_open_pointer( 'sportspost-player-link-submit', sportspost_data.close, function() {
 							sportspost_wizard_completed = true;
 						});
 					});

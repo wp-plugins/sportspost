@@ -58,12 +58,7 @@ class SportsPost_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		// Initialize plugin options
-		$this->options = array(
-			'default_sports_league' => 'l.mlb.com',
-			'affiliate_reference_id' => '',
-			'target_blank' => 0,
-			'force_wizard' => 0,
-		);
+		$this->options = $this->get_default_options();
 		$saved_options = get_option( 'sportspost_settings' );
 		if ( is_array( $saved_options ) ) {
 			$this->options = array_merge(
@@ -71,6 +66,29 @@ class SportsPost_Admin {
 				$saved_options
 			);
 		}
+	}
+
+	/**
+	 * Get default settings.
+	 *
+	 * @since    1.1.0
+	 */
+	public function get_default_options() {
+		return array(
+			'default_sports_league' => 'mlb',
+			'affiliate_reference_id' => '',
+			'target_blank' => 0,
+			'force_wizard' => 0,
+			'link_prefix' => 'http://sportsforecaster.com/',
+			'league_name_mlb' => 'mlb',
+			'league_name_nhl' => 'nhl',
+			'league_name_nfl' => 'nfl',
+			'league_name_nba' => 'nba',
+			'id_prefix' => '/player/',
+			'id_suffix' => '',
+			'output_publishers' => 'sportsforecaster.com',		
+			'sample_url' => ''			
+		);
 	}
 
 	/**
@@ -89,18 +107,35 @@ class SportsPost_Admin {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/sportspost-player-link.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script( $this->plugin_name, 'sportsPostPlayerLinkL10n', array(
+		wp_localize_script( $this->plugin_name, 'sportspost_data', array(
 				'title' => __( 'Insert/edit Player Link', 'sportspost' ),
 				'update' => __('Update'),
 				'save' => __( 'Add Player Link', 'sportspost' ),
-				'noTitle' => __( '(no title)' ),
-				'noMatchesFound' => __( 'No matches found.' ),
+				'no_title' => __( '(no title)' ),
+				'no_matches_found' => __( 'No matches found.' ),
 				'next' => __( 'Next', 'sportspost' ),
 				'close' => __( 'Close', 'sportspost' ),
-				'affiliateReferenceID' => $this->options['affiliate_reference_id'],
 				'api_endpoint' => SPORTSPOST_API_ENDPOINT,
-				'iconURL' => plugins_url( 'admin/img/icon-player.png', dirname( __FILE__ ) ),
+				'icon_url' => plugins_url( 'admin/img/icon-player.png', dirname( __FILE__ ) ),
+				'affiliate_reference_id' => $this->options['affiliate_reference_id'],
+				'link_prefix' => $this->options['link_prefix'],
+				'league_name_mlb' => $this->options['league_name_mlb'],
+				'league_name_nhl' => $this->options['league_name_nhl'],
+				'league_name_nfl' => $this->options['league_name_nfl'],
+				'league_name_nba' => $this->options['league_name_nba'],
+				'id_prefix' => $this->options['id_prefix'],
+				'id_suffix' => $this->options['id_suffix'],
+				'output_publishers' => $this->options['output_publishers'],
 		) );
+	}
+
+	/**
+	 * Register the JavaScript for the settings page.
+	 *
+	 * @since    1.1.0
+	 */
+	public function enqueue_settings_scripts() {
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/sportspost-settings.js', array( 'jquery' ), $this->version, false );
 	}
 
 	/**
@@ -128,7 +163,7 @@ class SportsPost_Admin {
 	 */
 	public function settings_init() {
 		add_settings_section(
-			'sportspost_settings_section', // Section ID
+			'sportspost_settings_section_1', // Section ID
 			'', // Section Title
 			'', // Section Callback
 			'sportspost_settings_page' // Page
@@ -139,41 +174,168 @@ class SportsPost_Admin {
 			__( 'Default Sports League', 'sportspost' ), // Field Title
 			array( $this, 'setting_default_sports_league_callback_function' ), // Field Callback
 			'sportspost_settings_page', // Page
-			'sportspost_settings_section' // Section
+			'sportspost_settings_section_1' // Section
 		);
 		
 		add_settings_field(
 			'affiliate_reference_id', // Field ID
 			__( 'Affiliate Reference ID', 'sportspost' ), // Field Title
-			array( $this, 'setting_affiliate_reference_id_callback_function' ), // Field Callback
+			array( $this, 'setting_text_callback_function' ), // Field Callback
 			'sportspost_settings_page', // Page
-			'sportspost_settings_section' // Section
+			'sportspost_settings_section_1', // Section
+			array( 'id' => 'affiliate_reference_id' )
 		);
-		
+
+		add_settings_field(
+			'sample_url', // Field ID
+			__( 'Sample Player Link URL', 'sportspost' ), // Field Title
+			array( $this, 'setting_text_callback_function' ), // Field Callback
+			'sportspost_settings_page', // Page
+			'sportspost_settings_section_1', // Section
+			array(
+				'id' => 'sample_url',
+				'size' => 75,
+				'readonly' => true
+			)
+		);
+
 		add_settings_field(
 			'target_blank', // Field ID
 			__( 'Default link target', 'sportspost' ), // Field Title
-			array( $this, 'setting_target_blank_callback_function' ), // Field Callback
+			array( $this, 'setting_checkbox_callback_function' ), // Field Callback
 			'sportspost_settings_page', // Page
-			'sportspost_settings_section' // Section
+			'sportspost_settings_section_1', // Section
+			array(
+				'id' => 'target_blank',
+				'label' => __( 'Set link behavior to "open in new window/tab"', 'sportspost' )
+			)
 		);
 		
+		add_settings_section(
+			'sportspost_settings_section_2', // Section ID
+			'', // Section Title
+			'', // Section Callback
+			'sportspost_settings_page' // Page
+		);
+
+		add_settings_field(
+			'link_prefix', // Field ID
+			__( 'Player link prefix', 'sportspost' ), // Field Title
+			array( $this, 'setting_text_callback_function' ), // Field Callback
+			'sportspost_settings_page', // Page
+			'sportspost_settings_section_2', // Section
+			array(
+				'id' => 'link_prefix',
+				'size' => 50
+			)
+		);
+
+		add_settings_field(
+			'league_name_mlb', // Field ID
+			__( 'League name (MLB)', 'sportspost' ), // Field Title
+			array( $this, 'setting_text_callback_function' ), // Field Callback
+			'sportspost_settings_page', // Page
+			'sportspost_settings_section_2', // Section
+			array( 'id' => 'league_name_mlb' )
+		);
+
+		add_settings_field(
+			'league_name_nhl', // Field ID
+			__( 'League name (NHL)', 'sportspost' ), // Field Title
+			array( $this, 'setting_text_callback_function' ), // Field Callback
+			'sportspost_settings_page', // Page
+			'sportspost_settings_section_2', // Section
+			array( 'id' => 'league_name_nhl' )
+		);
+
+		add_settings_field(
+			'league_name_nfl', // Field ID
+			__( 'League name (NFL)', 'sportspost' ), // Field Title
+			array( $this, 'setting_text_callback_function' ), // Field Callback
+			'sportspost_settings_page', // Page
+			'sportspost_settings_section_2', // Section
+			array( 'id' => 'league_name_nfl' )
+		);
+
+		add_settings_field(
+			'league_name_nba', // Field ID
+			__( 'League name (NBA)', 'sportspost' ), // Field Title
+			array( $this, 'setting_text_callback_function' ), // Field Callback
+			'sportspost_settings_page', // Page
+			'sportspost_settings_section_2', // Section
+			array( 'id' => 'league_name_nba' )
+		);
+
+		add_settings_field(
+			'id_prefix', // Field ID
+			__( 'Player ID prefix', 'sportspost' ), // Field Title
+			array( $this, 'setting_text_callback_function' ), // Field Callback
+			'sportspost_settings_page', // Page
+			'sportspost_settings_section_2', // Section
+			array( 'id' => 'id_prefix' )
+		);
+
+		add_settings_field(
+			'id_suffix', // Field ID
+			__( 'Player ID suffix', 'sportspost' ), // Field Title
+			array( $this, 'setting_text_callback_function' ), // Field Callback
+			'sportspost_settings_page', // Page
+			'sportspost_settings_section_2', // Section
+			array( 'id' => 'id_suffix' )
+		);
+		
+		add_settings_field(
+			'output_publishers', // Field ID
+			__( 'Output Publishers Vocabulary', 'sportspost' ), // Field Title
+			array( $this, 'setting_output_publishers_callback_function' ), // Field Callback
+			'sportspost_settings_page', // Page
+			'sportspost_settings_section_2', // Section
+			array(
+				'id' => 'output_publishers'
+			)
+		);
+
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			
+			add_settings_section(
+				'sportspost_settings_section_3', // Section ID
+				'', // Section Title
+				'', // Section Callback
+				'sportspost_settings_page' // Page
+			);
+			
 			add_settings_field(
 				'force_wizard', // Field ID
 				__( 'Force wizard', 'sportspost' ), // Field Title
-				array( $this, 'setting_force_wizard_callback_function' ), // Field Callback
+				array( $this, 'setting_checkbox_callback_function' ), // Field Callback
 				'sportspost_settings_page', // Page
-				'sportspost_settings_section' // Section
+				'sportspost_settings_section_3', // Section
+				array(
+					'id' => 'force_wizard',
+					'label' => __( 'Force the "Getting started" wizard to be always executed"', 'sportspost' )
+				)
 			);
 		}
 
 		register_setting(
 			'sportspost_settings_group', // Option group
-			'sportspost_settings' // Option name
+			'sportspost_settings', // Option name
+			array( $this, 'settings_validate' ) // Sanitize callback
 		);
 	}
  
+	/**
+	 * Helper function for settings validation.
+	 *
+	 * @since    1.1.0
+	 */
+	public function settings_validate( $input ) {
+		if ( ! empty( $input['reset'] ) ) {
+			return $this->get_default_options();
+		}
+		return $input;
+	}
+
 	/**
 	 * Helper function to display Sports League dropdown.
 	 *
@@ -198,31 +360,59 @@ class SportsPost_Admin {
 	}
 
 	/**
-	 * Callback function for Affiliate Reference ID setting.
+	 * Callback function for free text settings.
 	 *
-	 * @since    1.0.0
+	 * @since    1.1.0
 	 */
-	public function setting_affiliate_reference_id_callback_function() {
-		echo '<input name="sportspost_settings[affiliate_reference_id]" id="affiliate_reference_id" type="text" value="' . esc_attr( $this->options['affiliate_reference_id'] ) . '" class="code" />';
+	public function setting_text_callback_function( $args ) {
+		if ( isset( $args['id'] ) ) {
+			echo '<input ';
+			echo 'name="sportspost_settings[' . $args['id'] . ']" ';
+			echo 'id="' . $args['id'] . '" ';
+			echo 'type="text" ';
+			echo 'value="' . esc_attr( $this->options[ $args['id'] ] ) . '" ';
+			echo 'class="code" ';
+			if ( isset( $args['readonly'] ) && $args['readonly'] ) {
+				echo 'readonly="readonly" ';
+			}
+			if ( isset( $args['size'] ) ) {
+				echo 'size="' . $args['size'] . '" ';
+			}
+			echo '/>';
+		}
 	}
 
 	/**
-	 * Callback function for Default link target.
+	 * Callback function for checkbox settings.
 	 *
-	 * @since    1.0.0
+	 * @since    1.1.0
 	 */
-	public function setting_target_blank_callback_function() {
-		echo '<input name="sportspost_settings[target_blank]" id="target_blank" type="checkbox" value="1" ' . checked( $this->options['target_blank'], 1, false ) . ' class="code" /> ' . __( 'Set link behavior to "open in new window/tab"', 'sportspost' );
+	public function setting_checkbox_callback_function( $args ) {
+		if ( isset( $args['id'] ) ) {
+			echo '<input name="sportspost_settings[' . $args['id'] . ']" id="' . $args['id'] . '" type="checkbox" value="1" ' . checked( $this->options[ $args['id'] ], 1, false ) . ' class="code" /> <label for="' . $args['id'] . '">' . $args['label'] . '</label>';
+		}
 	}
 
 	/**
-	 * Callback function for Force wizard option.
+	 * Callback function for Default Sports League setting.
 	 *
-	 * @since    1.0.0
+	 * @since    1.1.0
 	 */
-	public function setting_force_wizard_callback_function() {
-		echo '<input name="sportspost_settings[force_wizard]" id="force_wizard" type="checkbox" value="1" ' . checked( $this->options['force_wizard'], 1, false ) . ' class="code" /> ' . __( 'Force the "Getting started" wizard to be always executed', 'sportspost' );
-	}
+	public function setting_output_publishers_callback_function( $args ) {
+		$selected = $this->options['output_publishers'];
+		echo '<select name="sportspost_settings[output_publishers]" id=output_publishers">';
+		echo '	<option value="sportsforecaster.com" ' . selected( $selected, 'sportsforecaster.com' ) . '>Sports Forecaster</option>';
+		echo '	<option value="stats.com" ' . selected( $selected, 'stats.com' ) . '>Stats (classic)</option>';
+		echo '	<option value="global.stats.com" ' . selected( $selected, 'global.stats.com' ) . '>Stats (global)</option>';
+		echo '	<option value="sports-reference.com" ' . selected( $selected, 'sports-reference.com' ) . '>Sports Reference</option>';
+		echo '	<option value="sportsnetwork.com" ' . selected( $selected, 'sportsnetwork.com' ) . '>Sports Network</option>';
+		echo '	<option value="retrosheet.org" ' . selected( $selected, 'retrosheet.org' ) . '>Retrosheet</option>';
+		echo '	<option value="rotoworld.com" ' . selected( $selected, 'rotoworld.com' ) . '>Rotoworld</option>';
+		echo '	<option value="mlb.com" ' . selected( $selected, 'mlb.com' ) . '>MLB.com</option>';
+		echo '	<option value="rotowire.com" ' . selected( $selected, 'rotowire.com' ) . '>Rotowire</option>';
+		echo '	<option value="sportsdirectinc.com" ' . selected( $selected, 'sportsdirectinc.com' ) . '>Sports Direct</option>';
+		echo '</select>';
+}
 
 	/**
 	 * Add TinyMCE toolbar button.

@@ -1,4 +1,4 @@
-/* global tinymce, sportsPostPlayerLinkL10n, wpActiveEditor */
+/* global tinymce, sportspost_data, wpActiveEditor */
 var sportsPostPlayerLink;
 
 ( function( $ ) {
@@ -180,7 +180,7 @@ var sportsPostPlayerLink;
 				// Set open in new tab.
 				inputs.openInNewTab.prop( 'checked', ( '_blank' === editor.dom.getAttrib( e, 'target' ) ) );
 				// Update save prompt.
-				inputs.submit.val( sportsPostPlayerLinkL10n.update );
+				inputs.submit.val( sportspost_data.update );
 
 			// If there's no link, set the default values.
 			} else {
@@ -353,7 +353,7 @@ var sportsPostPlayerLink;
 			inputs.submit.prop( 'disabled', false );
 
 			// Update save prompt.
-			inputs.submit.val( sportsPostPlayerLinkL10n.save );
+			inputs.submit.val( sportspost_data.save );
 		},
 
 		searchInternalLinks: function() {
@@ -562,16 +562,24 @@ var sportsPostPlayerLink;
 
 			if ( ! results ) {
 				list += '<li class="unselectable no-matches-found"><span class="item-title"><em>' +
-					sportsPostPlayerLinkL10n.noMatchesFound + '</em></span></li>';
+					sportspost_data.no_matches_found + '</em></span></li>';
 			} else {
 				$.each( results['results'], function() {
-					var permalink = 'http://sportsforecaster.com/' + $( '#player-league' ).val() + '/player/' + this['player-key'] + '?aff=' + sportsPostPlayerLinkL10n.affiliateReferenceID;
+					var permalink = sportspost_data.link_prefix;
+					permalink += sportspost_data[ 'league_name_' + $( '#player-league' ).val() ];
+					permalink += sportspost_data.id_prefix;
+					permalink += this['player-key'];
+					permalink += sportspost_data.id_suffix;
+					if ( sportspost_data.affiliate_reference_id ) {
+						permalink += permalink.indexOf( '?' ) > -1 ? '&amp;' : '?';
+						permalink += 'aff=' + sportspost_data.affiliate_reference_id;
+					}
 					classes = alt ? 'alternate' : '';
 					classes += this['first-name'] ? '' : ' no-title';
 					list += classes ? '<li class="' + classes + '">' : '<li>';
 					list += '<input type="hidden" class="item-permalink" value="' + permalink + '" />';
 					list += '<span class="item-title">';
-					list += this['first-name'] ? this['first-name'] + ' ' + this['last-name'] : sportsPostPlayerLinkL10n.noTitle;
+					list += this['first-name'] ? this['first-name'] + ' ' + this['last-name'] : sportspost_data.no_title;
 					list += '</span><span class="item-info">' + this['team-city'] + ( this['team-city'] != this['team-name'] ? ' ' + this['team-name'] : '' ) + '</span></li>';
 					alt = ! alt;
 				});
@@ -621,13 +629,13 @@ var sportsPostPlayerLink;
 					'league' : 'l.' + $( '#player-league' ).val() + '.com',
 					'name-fragment' : this.search.trim(),
 					'input-publisher' : 'sportsforecaster.com',
-					'output-publishers' : 'sportsforecaster.com',
+					'output-publishers' : sportspost_data.output_publishers,
 					'format' : 'sportsjson'
 				};
 
 			this.querying = true;
 
-			$.get( sportsPostPlayerLinkL10n.api_endpoint, query, function( r ) {
+			$.get( sportspost_data.api_endpoint, query, function( r ) {
 				self.querying = false;
 				self.allLoaded = true;
 				callback( r, query );

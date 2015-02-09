@@ -1,4 +1,4 @@
-/* global tinymce, sportsPostPlayerLinkL10n */
+/* global tinymce, sportspost_data */
 tinymce.PluginManager.add( 'sportspost', function( editor ) { 
 
 	editor.addCommand( 'Player_Link', function() {
@@ -11,15 +11,15 @@ tinymce.PluginManager.add( 'sportspost', function( editor ) {
 
 	editor.addButton( 'sportspost-playerlink', {
 		icon: 'playerlink',
-		image: sportsPostPlayerLinkL10n.iconURL,
-		tooltip: sportsPostPlayerLinkL10n.title,
+		image: sportspost_data.icon_url,
+		tooltip: sportspost_data.title,
 		shortcut: 'Alt+Shift+S',
 		cmd: 'Player_Link',
 	});
 
 	editor.addMenuItem( 'link', {
 		icon: 'playerlink',
-		text: sportsPostPlayerLinkL10n.title,
+		text: sportspost_data.title,
 		shortcut: 'Alt+Shift+S',
 		cmd: 'Player_Link',
 		stateSelector: 'a[href]',

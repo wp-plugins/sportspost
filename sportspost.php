@@ -13,7 +13,7 @@
  * Plugin Name:       SportsPost - Enriched Sports Posts
  * Plugin URI:        https://wordpress.org/plugins/sportspost/
  * Description:       Enhance your sports posts with rich, detailed metadata about games, teams, and players.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            XML Team Solutions
  * Author URI:        http://xmlteam.com/
  * License:           GPL-3.0

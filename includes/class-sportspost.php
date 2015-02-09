@@ -53,7 +53,7 @@ class SportsPost {
 	 */
 	public function __construct() {
 		$this->plugin_name = 'sportspost';
-		$this->version = '1.0.0';
+		$this->version = '1.1.0';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -127,6 +127,10 @@ class SportsPost {
 			$this->loader->add_action( 'wp_tiny_mce_init', $plugin_admin, 'wp_tiny_mce_init' );
 			$this->loader->add_action( 'after_wp_tiny_mce', $plugin_admin, 'player_link_dialog' );
 			$this->loader->add_action( 'wp_ajax_sportspost-player-link-ajax', $plugin_admin, 'player_link_ajax' );
+		}
+		if ( 'options-general.php' == $pagenow && isset( $_GET['page'] ) && 'sportspost_settings_page' == $_GET['page'] ) {
+			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_settings_scripts' );
 		}
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'settings_init' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_settings_page' );

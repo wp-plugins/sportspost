@@ -352,6 +352,10 @@ i.mce-i-playerlink:before {
 	margin-bottom: 0;
 }
 
+.settings_page_sportspost_settings_page .form-table {
+	border-bottom: solid 1px #e1e1e1;
+}
+
 @media screen and ( max-width: 782px ) {
 	#sportspost-player-link-wrap {
 		height: 280px;
