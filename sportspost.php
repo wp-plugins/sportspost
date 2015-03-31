@@ -13,7 +13,7 @@
  * Plugin Name:       SportsPost - Enriched Sports Posts
  * Plugin URI:        https://wordpress.org/plugins/sportspost/
  * Description:       Enhance your sports posts with rich, detailed metadata about games, teams, and players.
- * Version:           1.1.0
+ * Version:           2.0.0
  * Author:            XML Team Solutions
  * Author URI:        http://xmlteam.com/
  * License:           GPL-3.0
@@ -46,7 +46,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-sportspost.php';
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    1.0.0
+ * @since 1.0.0
  */
 function run_sportspost() {
 

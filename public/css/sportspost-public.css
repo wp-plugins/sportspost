@@ -1,0 +1,372 @@
+#sss-body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+  font-size: 12pt;
+  margin: 10px;
+}
+div#sss-body, div#sss-body th, div#sss-body td {
+  font-size: 10pt;
+}
+/*
+#     #  #######  ######   ######   ######   ######   #######   #####    ##### 
+#  #  #  #     #  #     #  #     #  #     #  #     #  #        #     #  #     #
+#  #  #  #     #  #     #  #     #  #     #  #     #  #        #        #      
+#  #  #  #     #  ######   #     #  ######   ######   #####     #####    ##### 
+#  #  #  #     #  #   #    #     #  #        #   #    #              #        #
+#  #  #  #     #  #    #   #     #  #        #    #   #        #     #  #     #
+ ## ##   #######  #     #  ######   #        #     #  #######   #####    ##### 
+*/
+table {
+  table-layout: auto;
+}
+/*
+  #        ###  #     #  #######   #####    #####   #######  ######   #######  
+  #         #   ##    #  #        #     #  #     #  #     #  #     #  #        
+  #         #   # #   #  #        #        #        #     #  #     #  #        
+  #         #   #  #  #  #####     #####   #        #     #  ######   #####    
+  #         #   #   # #  #              #  #        #     #  #   #    #        
+  #         #   #    ##  #        #     #  #     #  #     #  #    #   #        
+  #######  ###  #     #  #######   #####    #####   #######  #     #  #######  
+*/
+div#sss-scoreboard {
+  width: 300px;
+}
+div#sss-branding {
+  display: none;
+}
+table.sss-event-header {
+  border-collapse: collapse;
+  margin-bottom: 5px;
+  border: 1px solid #cdcdcd;
+}
+table.sss-event-header tr:nth-child(1) {
+  border-bottom: 1px solid #cdcdcd;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+table.sss-event-header tr:nth-child(2) td {
+  background-color: #ffffff;
+}
+table.sss-event-header td {
+  font-size: 110%;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  background-color: #efefef;
+}
+div.sss-event {
+  padding: 4px;
+  background-color: #efefef;
+  border:1px solid #787878;
+  margin-bottom: 5px;
+}
+div.sss-event table {
+  width: 290px;
+  border-collapse: collapse;
+}
+/* http://css-tricks.com/useful-nth-child-recipies/ */
+/* away team header */
+table.sss-scoreboard-summary thead tr:nth-child(1) th {
+  /*width: 100px;*/
+  text-align: center;
+  font-weight: bold;
+  font-size: 115%;
+}
+/* away team header */
+table.sss-scoreboard-summary thead tr:nth-child(1) th:nth-child(-n+3) {
+  width: 100px;
+  background-color: #336699;
+  color: #ffffff;
+}
+/* away team logo */
+table.sss-scoreboard-summary thead tr:nth-child(1) th:nth-child(1) {
+  /*width: 10%;*/
+}
+/* away team score */
+table.sss-scoreboard-summary thead tr:nth-child(1) th:nth-child(3) {
+  /*width: 10%;*/
+  font-size: 150%;
+}
+/* home team header */
+table.sss-scoreboard-summary thead tr:nth-child(1) th:nth-child(n+4) {
+  width: 100px;
+  background-color: #B88A00;
+  color: #ffffff;
+}
+/* home team score */
+table.sss-scoreboard-summary thead tr:nth-child(1) th:nth-child(4) {
+  /*width: 10%;*/
+  font-size: 150%;
+}
+/* home team logo */
+table.sss-scoreboard-summary thead tr:nth-child(1) th:nth-child(6) {
+  /*width: 10%;*/
+}
+table.sss-scoreboard-table thead {
+  border-bottom: 1px solid #787878;
+}
+table.sss-scoreboard-table tr:nth-child(1) {
+  border-bottom: 1px solid #787878;
+}
+table.sss-scoreboard-table tr.sss-links {
+  color: #787878;
+  border-top: 1px solid #787878;
+}
+table.sss-scoreboard-table tr.sss-links td a {
+  color: #343434;
+  font-weight: bold;
+  text-decoration: underline;
+  font-size: 8pt;
+}
+table.sss-scoreboard-table tr.sss-links td a:hover {
+  text-decoration: none;
+}
+/*
+  ######   #######  #     #   #####    #####   #######  ######   #######  
+  #     #  #     #   #   #   #     #  #     #  #     #  #     #  #        
+  #     #  #     #    # #    #        #        #     #  #     #  #        
+  ######   #     #     #      #####   #        #     #  ######   #####    
+  #     #  #     #    # #          #  #        #     #  #   #    #        
+  #     #  #     #   #   #   #     #  #     #  #     #  #    #   #        
+  ######   #######  #     #   #####    #####   #######  #     #  #######  
+
+  #######  #######     #     #     #  
+     #     #          # #    ##   ##  
+     #     #         #   #   # # # #  
+     #     #####    #     #  #  #  #  
+     #     #        #######  #     #  
+     #     #        #     #  #     #  
+     #     #######  #     #  #     #  
+*/
+div.sss-boxscore-team-summary table {
+  width: 290px;
+  border-collapse: collapse;
+  border: 1px solid #cdcdcd;
+  margin: 5px;
+}
+table.sss-boxscore-team-summary tr td {
+  text-align: center;
+  font-weight: bold;
+}
+table.sss-boxscore-team-summary tr td:nth-child(1) {
+  background-color: #336699;
+  color: #ffffff;
+}
+table.sss-boxscore-team-summary tr td:nth-child(2) {
+  font-weight: bold;
+  background-color: #efefef;
+  border-bottom: 1px solid #dddddd;
+}
+table.sss-boxscore-team-summary tr td:nth-child(2):hover {
+  background-color: yellow;
+}
+table.sss-boxscore-team-summary tr td:nth-child(3) {
+  background-color: #B88A00;
+  color: #ffffff;
+}
+/*
+  ######   #######  #     #   #####    #####   #######  ######   #######  
+  #     #  #     #   #   #   #     #  #     #  #     #  #     #  #        
+  #     #  #     #    # #    #        #        #     #  #     #  #        
+  ######   #     #     #      #####   #        #     #  ######   #####    
+  #     #  #     #    # #          #  #        #     #  #   #    #        
+  #     #  #     #   #   #   #     #  #     #  #     #  #    #   #        
+  ######   #######  #     #   #####    #####   #######  #     #  #######  
+
+  ######   #           #     #     #  #######  ######   
+  #     #  #          # #     #   #   #        #     #  
+  #     #  #         #   #     # #    #        #     #  
+  ######   #        #     #     #     #####    ######   
+  #        #        #######     #     #        #   #    
+  #        #        #     #     #     #        #    #   
+  #        #######  #     #     #     #######  #     #  
+*/
+div.sss-boxscore-player-summary table {
+  width: 290px;
+  border-collapse: collapse;
+  border: 1px solid #ababab;
+  margin: 5px;
+}
+div.sss-boxscore-player-summary table caption {
+  text-align: left;
+}
+div.sss-boxscore-player-summary table caption div img {
+  max-height: 50px;
+  vertical-align: middle;
+}
+div.sss-boxscore-player-summary table caption div span {
+  font-weight: bold;
+  vertical-align: middle;
+  font-size: 125%;
+}
+table.sss-boxscore-player-summary tr th {
+  background-color: #abcdef;
+  border-bottom: 1px solid #ababab;
+  padding: 3px;
+}
+table.sss-boxscore-player-summary tr td {
+  padding: 3px;
+}
+table.sss-boxscore-player-summary tr td:hover {
+  background-color: yellow;
+}
+table.sss-boxscore-player-summary tr:nth-child(odd) {
+  background-color: #efefef;
+}
+table.sss-boxscore-player-summary tr td:nth-child(1) {
+  white-space: nowrap;
+}
+table.sss-boxscore-player-summary tr td:nth-child(n+2) {
+  text-align: right;
+}
+table.sss-boxscore-player-summary tr th:nth-child(n+2) {
+  border-left: 1px solid #ababab;
+}
+table.sss-boxscore-player-summary tr td:nth-child(n+2) {
+  border-left: 1px solid #ababab;
+}
+/*
+  ######   #######  #     #   #####    #####   #######  ######   #######  
+  #     #  #     #   #   #   #     #  #     #  #     #  #     #  #        
+  #     #  #     #    # #    #        #        #     #  #     #  #        
+  ######   #     #     #      #####   #        #     #  ######   #####    
+  #     #  #     #    # #          #  #        #     #  #   #    #        
+  #     #  #     #   #   #   #     #  #     #  #     #  #    #   #        
+  ######   #######  #     #   #####    #####   #######  #     #  #######  
+
+  ######   #######  ######   ###  #######  ######   
+  #     #  #        #     #   #   #     #  #     #  
+  #     #  #        #     #   #   #     #  #     #  
+  ######   #####    ######    #   #     #  #     #  
+  #        #        #   #     #   #     #  #     #  
+  #        #        #    #    #   #     #  #     #  
+  #        #######  #     #  ###  #######  ######   
+
+   #####   #     #  #     #  #     #     #     ######   #     #  
+  #     #  #     #  ##   ##  ##   ##    # #    #     #   #   #   
+  #        #     #  # # # #  # # # #   #   #   #     #    # #    
+   #####   #     #  #  #  #  #  #  #  #     #  ######      #     
+        #  #     #  #     #  #     #  #######  #   #       #     
+  #     #  #     #  #     #  #     #  #     #  #    #      #     
+   #####    #####   #     #  #     #  #     #  #     #     #     
+*/
+div.sss-boxscore-period-summary table {
+  width: 400px;
+  border-collapse: collapse;
+  border: 1px solid #ababab;
+  margin: 5px;
+}
+table.sss-boxscore-period-summary tr.sss-boxscore-period-summary-header {
+  background-color: #cdcdcd;
+}
+table.sss-boxscore-period-summary tr.sss-boxscore-period-summary-header-titles {
+}
+table.sss-boxscore-period-summary tr.sss-boxscore-period-summary-header th {
+  text-align: left;
+  font-size: 140%;
+  padding: 5px;
+}
+table.sss-boxscore-period-summary tr.sss-boxscore-period-summary-header-titles th {
+  font-size: 120%;
+  padding: 3px;
+  background-color: #ababab;
+}
+table.sss-boxscore-period-summary tr.sss-boxscore-period-summary-row:nth-child(even) {
+  background-color: #efefef;
+}
+table.sss-boxscore-period-summary tr.sss-boxscore-period-summary-row td:nth-child(1) {
+  padding-left: 5px;
+}
+table.sss-boxscore-period-summary tr.sss-boxscore-period-summary-row td:nth-child(2) {
+  text-align: center;
+  width: 10%;
+}
+table.sss-boxscore-period-summary tr.sss-boxscore-period-summary-row td:nth-child(2) img {
+  width: 75%;
+}
+table.sss-boxscore-period-summary tr.sss-boxscore-period-summary-row td:nth-child(n+4) {
+  text-align: center;
+}
+/*
+   #####   #######     #     #     #  ######   ###  #     #   #####    #####   
+  #     #     #       # #    ##    #  #     #   #   ##    #  #     #  #     #  
+  #           #      #   #   # #   #  #     #   #   # #   #  #        #        
+   #####      #     #     #  #  #  #  #     #   #   #  #  #  #  ####   #####   
+        #     #     #######  #   # #  #     #   #   #   # #  #     #        #  
+  #     #     #     #     #  #    ##  #     #   #   #    ##  #     #  #     #  
+   #####      #     #     #  #     #  ######   ###  #     #   #####    #####   
+*/
+
+div.sss-standings table {
+  border-collapse: collapse;
+  border: 1px solid #ababab;
+  margin: 5px;
+}
+div.sss-standings caption {
+  text-align: left;
+  font-weight: bold;
+  font-size: 14pt;
+  padding: 5px;
+  border-top: 1px solid #ababab;
+  border-left: 1px solid #ababab;
+  border-right: 1px solid #ababab;
+  background-color: #efefef;
+}
+div.sss-standings table tr th {
+  background-color: #cdcdcd;
+  padding: 5px;
+}
+div.sss-standings table tr td {
+  padding: 3px;
+}
+div.sss-standings table tr:hover {
+  background-color: yellow;
+}
+div.sss-standings table tr:nth-child(odd) {
+  background-color: #efefef;
+}
+
+/*
+   #####   #######  #     #  #######  ######      #     #        
+  #     #  #        ##    #  #        #     #    # #    #        
+  #        #        # #   #  #        #     #   #   #   #        
+  #  ####  #####    #  #  #  #####    ######   #     #  #        
+  #     #  #        #   # #  #        #   #    #######  #        
+  #     #  #        #    ##  #        #    #   #     #  #        
+   #####   #######  #     #  #######  #     #  #     #  #######  
+*/
+
+div#sss-document-title {
+  padding: 10px;
+  font-weight: bold;
+}
+div#sss-document-title div:nth-child(1) {
+  font-size: 14pt;
+}
+.sss-scoreboard-table {
+  margin-top: 5px;
+}
+.sss-scoreboard-table td.sss-team-name {
+  width: 40%;
+  font-weight: bold;
+  font-size: 110%;
+}
+.sss-scoreboard-table td.sss-period, td.sss-highlight {
+  width: 10%;
+  text-align: center;
+}
+.sss-logo-tiny {
+  height: 25%;
+  width: 25%;
+}
+.sss-logo-small {
+  max-height: 40px;
+}
+.sss-logo-large {
+  height: 150%;
+  width: 150%;
+}

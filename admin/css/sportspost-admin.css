@@ -1,9 +1,13 @@
-/* dashicon version
-i.mce-i-playerlink:before {
-	font: normal 20px/1 'dashicons';
-	content: '\f337';
+/* Live Content Widget stuff */
+
+#available-widgets [class*="sportspost_content"] .widget-title:before,
+.so-panels-dialog.so-panels-dialog-add-widget .widget-type-list .widget-type .sportspost-icon {
+	content: "";
+	background-image: url(../img/icon-player.png);
+	background-size: 20px 20px;
 }
-*/
+
+/* Player profile Links stuff */
 
 .quicktags-toolbar input[value="player"] {
 	text-decoration: underline;

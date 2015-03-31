@@ -1,9 +1,8 @@
 <?php
-
 /**
  * The settins page for the plugin
  *
- * @since      1.0.0
+ * @since   1.0.0
  *
  * @package    SportsPost
  * @subpackage SportsPost/admin/partials

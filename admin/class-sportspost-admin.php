@@ -3,7 +3,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @since      1.0.0
+ * @since   1.0.0
  *
  * @package    SportsPost
  * @subpackage SportsPost/admin
@@ -13,7 +13,7 @@ class SportsPost_Admin {
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
@@ -22,34 +22,34 @@ class SportsPost_Admin {
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
 	private $version;
 
 	/**
-	 * The options of this plugin.
+	 * The settings of this plugin.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 * @access   private
-	 * @var      array    $options    The options of this plugin.
+	 * @var      array    $settings    The settings of this plugin.
 	 */
-	private $options;
+	private $settings;
 
 	/**
 	 * The admin pointers of this plugin.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 * @access   private
-	 * @var      array    $options    The admin pointers of this plugin.
+	 * @var      array    $pointers    The admin pointers of this plugin.
 	 */
 	private $pointers;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
@@ -57,13 +57,13 @@ class SportsPost_Admin {
 		// Initialize plugin meta data
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		// Initialize plugin options
-		$this->options = $this->get_default_options();
-		$saved_options = get_option( 'sportspost_settings' );
-		if ( is_array( $saved_options ) ) {
-			$this->options = array_merge(
-				$this->options,
-				$saved_options
+		// Initialize plugin settings
+		$this->settings = $this->get_default_settings();
+		$saved_settings = get_option( 'sportspost_settings' );
+		if ( is_array( $saved_settings ) ) {
+			$this->settings = array_merge(
+				$this->settings,
+				$saved_settings
 			);
 		}
 	}
@@ -71,9 +71,9 @@ class SportsPost_Admin {
 	/**
 	 * Get default settings.
 	 *
-	 * @since    1.1.0
+	 * @since 1.1.0
 	 */
-	public function get_default_options() {
+	public function get_default_settings() {
 		return array(
 			'default_sports_league' => 'mlb',
 			'affiliate_reference_id' => '',
@@ -87,14 +87,28 @@ class SportsPost_Admin {
 			'id_prefix' => '/player/',
 			'id_suffix' => '',
 			'output_publishers' => 'sportsforecaster.com',		
-			'sample_url' => ''			
+			'sample_url' => '',
+			'content_api_url' => 'http://sportscaster.xmlteam.com/'			,
+			'content_api_username' => '',
+			'content_api_password' => '',
+			'sources_available' => array(),
+			'show_connected' => 0
 		);
+	}
+
+	/**
+	 * Get current settings.
+	 *
+	 * @since 2.0.0
+	 */
+	public function get_settings() {
+		return $this->settings;
 	}
 
 	/**
 	 * Register the stylesheets for the Dashboard.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/sportspost-admin.css', array(), $this->version, 'all' );
@@ -103,7 +117,7 @@ class SportsPost_Admin {
 	/**
 	 * Register the JavaScript for the dashboard.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/sportspost-player-link.js', array( 'jquery' ), $this->version, false );
@@ -117,22 +131,22 @@ class SportsPost_Admin {
 				'close' => __( 'Close', 'sportspost' ),
 				'api_endpoint' => SPORTSPOST_API_ENDPOINT,
 				'icon_url' => plugins_url( 'admin/img/icon-player.png', dirname( __FILE__ ) ),
-				'affiliate_reference_id' => $this->options['affiliate_reference_id'],
-				'link_prefix' => $this->options['link_prefix'],
-				'league_name_mlb' => $this->options['league_name_mlb'],
-				'league_name_nhl' => $this->options['league_name_nhl'],
-				'league_name_nfl' => $this->options['league_name_nfl'],
-				'league_name_nba' => $this->options['league_name_nba'],
-				'id_prefix' => $this->options['id_prefix'],
-				'id_suffix' => $this->options['id_suffix'],
-				'output_publishers' => $this->options['output_publishers'],
+				'affiliate_reference_id' => $this->settings['affiliate_reference_id'],
+				'link_prefix' => $this->settings['link_prefix'],
+				'league_name_mlb' => $this->settings['league_name_mlb'],
+				'league_name_nhl' => $this->settings['league_name_nhl'],
+				'league_name_nfl' => $this->settings['league_name_nfl'],
+				'league_name_nba' => $this->settings['league_name_nba'],
+				'id_prefix' => $this->settings['id_prefix'],
+				'id_suffix' => $this->settings['id_suffix'],
+				'output_publishers' => $this->settings['output_publishers'],
 		) );
 	}
 
 	/**
 	 * Register the JavaScript for the settings page.
 	 *
-	 * @since    1.1.0
+	 * @since 1.1.0
 	 */
 	public function enqueue_settings_scripts() {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/sportspost-settings.js', array( 'jquery' ), $this->version, false );
@@ -141,7 +155,7 @@ class SportsPost_Admin {
 	/**
 	 * Add the settings page in the Settings menu.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function add_settings_page() {
 		add_options_page( 'SportsPost Settings', 'SportsPost', 'manage_options', 'sportspost_settings_page', array( $this, 'display_settings_page' ) );
@@ -150,7 +164,7 @@ class SportsPost_Admin {
 	/**
 	 * Display the settings page in the menu API.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function display_settings_page() {
 		include( 'partials/sportspost-admin-settings.php' );
@@ -159,7 +173,7 @@ class SportsPost_Admin {
 	/**
 	 * Initialize the settings API.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function settings_init() {
 		add_settings_section(
@@ -295,10 +309,47 @@ class SportsPost_Admin {
 			)
 		);
 
+		add_settings_section(
+			'sportspost_settings_section_3', // Section ID
+			'', // Section Title
+			'', // Section Callback
+			'sportspost_settings_page' // Page
+		);
+
+		add_settings_field(
+			'content_api_url', // Field ID
+			__( 'SportsPost Widget base URL', 'sportspost' ), // Field Title
+			array( $this, 'setting_text_callback_function' ), // Field Callback
+			'sportspost_settings_page', // Page
+			'sportspost_settings_section_3', // Section
+			array(
+				'id' => 'content_api_url',
+				'size' => 50
+			)
+		);
+
+		add_settings_field(
+			'content_api_username', // Field ID
+			__( 'SportsPost Widget username', 'sportspost' ), // Field Title
+			array( $this, 'setting_text_callback_function' ), // Field Callback
+			'sportspost_settings_page', // Page
+			'sportspost_settings_section_3', // Section
+			array( 'id' => 'content_api_username' )
+		);
+
+		add_settings_field(
+			'content_api_password', // Field ID
+			__( 'SportsPost Widget password', 'sportspost' ), // Field Title
+			array( $this, 'setting_text_callback_function' ), // Field Callback
+			'sportspost_settings_page', // Page
+			'sportspost_settings_section_3', // Section
+			array( 'id' => 'content_api_password' )
+		);
+
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			
 			add_settings_section(
-				'sportspost_settings_section_3', // Section ID
+				'sportspost_settings_section_4', // Section ID
 				'', // Section Title
 				'', // Section Callback
 				'sportspost_settings_page' // Page
@@ -309,13 +360,15 @@ class SportsPost_Admin {
 				__( 'Force wizard', 'sportspost' ), // Field Title
 				array( $this, 'setting_checkbox_callback_function' ), // Field Callback
 				'sportspost_settings_page', // Page
-				'sportspost_settings_section_3', // Section
+				'sportspost_settings_section_4', // Section
 				array(
 					'id' => 'force_wizard',
 					'label' => __( 'Force the "Getting started" wizard to be always executed"', 'sportspost' )
 				)
 			);
 		}
+		
+		do_action( 'sportspost_settings' );
 
 		register_setting(
 			'sportspost_settings_group', // Option group
@@ -327,11 +380,11 @@ class SportsPost_Admin {
 	/**
 	 * Helper function for settings validation.
 	 *
-	 * @since    1.1.0
+	 * @since 1.1.0
 	 */
 	public function settings_validate( $input ) {
 		if ( ! empty( $input['reset'] ) ) {
-			return $this->get_default_options();
+			return $this->get_default_settings();
 		}
 		return $input;
 	}
@@ -339,7 +392,7 @@ class SportsPost_Admin {
 	/**
 	 * Helper function to display Sports League dropdown.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function display_league_dropdown( $name, $id, $selected ) {
 		echo '<select name="' . $name . '" id="' . $id . '">';
@@ -353,16 +406,16 @@ class SportsPost_Admin {
 	/**
 	 * Callback function for Default Sports League setting.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function setting_default_sports_league_callback_function() {
-		$this->display_league_dropdown( 'sportspost_settings[default_sports_league]', 'default_sports_league', $this->options['default_sports_league'] );
+		$this->display_league_dropdown( 'sportspost_settings[default_sports_league]', 'default_sports_league', $this->settings['default_sports_league'] );
 	}
 
 	/**
 	 * Callback function for free text settings.
 	 *
-	 * @since    1.1.0
+	 * @since 1.1.0
 	 */
 	public function setting_text_callback_function( $args ) {
 		if ( isset( $args['id'] ) ) {
@@ -370,7 +423,7 @@ class SportsPost_Admin {
 			echo 'name="sportspost_settings[' . $args['id'] . ']" ';
 			echo 'id="' . $args['id'] . '" ';
 			echo 'type="text" ';
-			echo 'value="' . esc_attr( $this->options[ $args['id'] ] ) . '" ';
+			echo 'value="' . esc_attr( $this->settings[ $args['id'] ] ) . '" ';
 			echo 'class="code" ';
 			if ( isset( $args['readonly'] ) && $args['readonly'] ) {
 				echo 'readonly="readonly" ';
@@ -385,21 +438,21 @@ class SportsPost_Admin {
 	/**
 	 * Callback function for checkbox settings.
 	 *
-	 * @since    1.1.0
+	 * @since 1.1.0
 	 */
 	public function setting_checkbox_callback_function( $args ) {
 		if ( isset( $args['id'] ) ) {
-			echo '<input name="sportspost_settings[' . $args['id'] . ']" id="' . $args['id'] . '" type="checkbox" value="1" ' . checked( $this->options[ $args['id'] ], 1, false ) . ' class="code" /> <label for="' . $args['id'] . '">' . $args['label'] . '</label>';
+			echo '<input name="sportspost_settings[' . $args['id'] . ']" id="' . $args['id'] . '" type="checkbox" value="1" ' . checked( $this->settings[ $args['id'] ], 1, false ) . ' class="code" /> <label for="' . $args['id'] . '">' . $args['label'] . '</label>';
 		}
 	}
 
 	/**
 	 * Callback function for Default Sports League setting.
 	 *
-	 * @since    1.1.0
+	 * @since 1.1.0
 	 */
 	public function setting_output_publishers_callback_function( $args ) {
-		$selected = $this->options['output_publishers'];
+		$selected = $this->settings['output_publishers'];
 		echo '<select name="sportspost_settings[output_publishers]" id=output_publishers">';
 		echo '	<option value="sportsforecaster.com" ' . selected( $selected, 'sportsforecaster.com' ) . '>Sports Forecaster</option>';
 		echo '	<option value="stats.com" ' . selected( $selected, 'stats.com' ) . '>Stats (classic)</option>';
@@ -417,7 +470,7 @@ class SportsPost_Admin {
 	/**
 	 * Add TinyMCE toolbar button.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 * @var      array    $buttons       Array of TinyMCE buttons.
 	 */
 	public function register_tinymce_button( $buttons ) {
@@ -428,7 +481,7 @@ class SportsPost_Admin {
 	/**
 	 * Add TinyMCE external plugin.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 * @var      array    $plugins       Array of TinyMCE plugins.
 	 */
 	public function add_tinymce_plugin( $plugins ) {
@@ -450,20 +503,20 @@ class SportsPost_Admin {
 	/**
 	 * Add Quicktags button.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function add_quicktags_button() {
 ?>
 	<script type="text/javascript">
-	QTags.addButton( 'playerlink', 'player', function(){ window.sportsPostPlayerLink.open() }, '', '', 'Insert Player Link', 29 );
-    </script>
+		QTags.addButton( 'playerlink', 'player', function(){ window.sportsPostPlayerLink.open() }, '', '', 'Insert Player Link', 29 );
+	</script>
 <?php
 	}
 
 	/**
 	 * Dialog for palyer links.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function player_link_dialog() {
 		$search_panel_visible = '1' == get_user_setting( 'wplink', '0' ) ? ' search-panel-visible' : '';
@@ -473,12 +526,10 @@ class SportsPost_Admin {
 	/**
 	 * Ajax handler for player linking.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function player_link_ajax() {
 		check_ajax_referer( 'sportpost-player-linking', '_ajax_sportspost_player_link_nonce' );
-		
-		// Version A: Queries with multiple keys handled directly by sportscodes.org server
 		if ( ! empty( $_POST['league'] ) && ! empty( $_POST['search'] ) ) {
 			$url = SPORTSPOST_API_ENDPOINT . '?';
 			$url .= 'type=players&';
@@ -498,7 +549,7 @@ class SportsPost_Admin {
 	/**
 	 * Load admin pointer(s)
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function load_admin_pointers() {
 		$this->pointers = $this->filter_dismissed_admin_pointers( $this->register_admin_pointer() );
@@ -512,7 +563,7 @@ class SportsPost_Admin {
 	/**
 	 * Register admin pointer(s)
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 * @var      mixed[] $pointers
 	 */
 	public function register_admin_pointer() {
@@ -598,11 +649,11 @@ class SportsPost_Admin {
 	/**
 	 * Remove dismissed admin pointer(s)
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 * @var		 mixed[]  $pointers
 	 */
 	public function filter_dismissed_admin_pointers( $pointers ) {
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && $this->options['force_wizard'] ) return $pointers;
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && $this->settings['force_wizard'] ) return $pointers;
 		$valid_pointers = array();
 		if ( is_array( $pointers ) ) {
 			$dismissed = explode( ',', (string) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
@@ -615,4 +666,16 @@ class SportsPost_Admin {
 		return $valid_pointers;
 	}
 
+	/**
+	 * Customize widget in Page Builder (SiteOrigin Panels)
+	 *
+	 * @since 1.2.0
+	 * @var		 mixed[]  $widgets
+	 */
+	public function siteorigin_panels_widgets( $widgets ) {
+		if ( ! empty( $widgets['SportsPost_Content_Widget'] ) ) {
+			$widgets['SportsPost_Content_Widget']['icon'] = 'sportspost-icon';
+		}
+		return $widgets;
+	}
 }

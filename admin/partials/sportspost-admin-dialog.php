@@ -1,15 +1,13 @@
 <?php
-
 /**
  * The insert/edit player link dialog
  *
- * @since      1.0.0
+ * @since   1.0.0
  *
  * @package    SportsPost
  * @subpackage SportsPost/admin/partials
  */
 ?>
-
 		<div id="sportspost-player-link-backdrop" style="display: none"></div>
 		<div id="sportspost-player-link-wrap" class="wp-core-ui<?php echo $search_panel_visible; ?>" style="display: none">
 		<form id="sportspost-player-link" tabindex="-1">
@@ -29,7 +27,7 @@
 					<label><span><?php _e( 'Title' ); ?></span><input id="player-link-title-field" type="text" name="linktitle" /></label>
 				</div>
 				<div class="link-target">
-					<label><span>&nbsp;</span><input type="checkbox" id="player-link-target-checkbox" <?php checked( $this->options['target_blank'], 1) ?> /> <?php _e( 'Open link in a new window/tab' ); ?></label>
+					<label><span>&nbsp;</span><input type="checkbox" id="player-link-target-checkbox" <?php checked( $this->settings['target_blank'], 1) ?> /> <?php _e( 'Open link in a new window/tab' ); ?></label>
 				</div>
 			</div>
 			<div id="player-search-panel">
@@ -40,7 +38,7 @@
 					</label>
 					<label>
                         <span class="search-label"><?php _e( 'League', 'sportspost' ); ?></span>
-						<?php $this->display_league_dropdown( 'league', 'player-league', $this->options['default_sports_league'] ); ?>
+						<?php $this->display_league_dropdown( 'league', 'player-league', $this->settings['default_sports_league'] ); ?>
 					</label>
 					<span class="spinner"></span>
 				</div>
